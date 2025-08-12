@@ -20,6 +20,8 @@ spec:
       labels:
         app: whodistrod
     spec:
+      imagePullSecrets:
+        - name: ghcr-login-secret
       containers:
         - name: whodistrod
           image: whodistrod-image

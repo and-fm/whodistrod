@@ -50,6 +50,9 @@ spec:
         - name: whodistrod-api
           image: whodistrod-api-image
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: whodistrod-secrets
           resources:
             requests:
               memory: "64Mi"
@@ -71,6 +74,13 @@ spec:
             periodSeconds: 10
           ports:
             - containerPort: 5000
+          volumeMounts:
+            - name: config-volume
+              mountPath: "/app/config"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: whodistrod-configmap-json
 ---
 apiVersion: v1
 kind: Service

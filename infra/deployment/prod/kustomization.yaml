@@ -7,13 +7,13 @@ resources:
 namespace: whodistrod-prod
 images:
   - name: whodistrod-image
-    newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:name"}
-    newTag: web # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:tag"}
-    digest: sha256:e11103549150c8c4d40bcf4efdb448d2a9ecfa7b8f1886068cb733c1d0d06ce5 # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:digest"}
+    newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:name"}
+    newTag: web # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:tag"}
+    digest: sha256:e11103549150c8c4d40bcf4efdb448d2a9ecfa7b8f1886068cb733c1d0d06ce5 # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:digest"}
   - name: whodistrod-api-image
-    newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:name"}
-    newTag: api # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:tag"}
-    digest: sha256:e11103549150c8c4d40bcf4efdb448d2a9ecfa7b8f1886068cb733c1d0d06ce5 # {"$imagepolicy": "flux-system:whodistrod-image-policy-prod:digest"}
+    newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:name"}
+    newTag: api # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:tag"}
+    digest: sha256:e11103549150c8c4d40bcf4efdb448d2a9ecfa7b8f1886068cb733c1d0d06ce5 # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:digest"}
 patches:
   - target:
       group: traefik.io

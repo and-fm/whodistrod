@@ -4,6 +4,7 @@ resources:
   - ../base
   - ns.yaml
   - cm.yaml
+  - secrets.yaml
 namespace: whodistrod-prod
 images:
   - name: whodistrod-image

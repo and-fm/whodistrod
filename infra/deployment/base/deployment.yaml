@@ -45,7 +45,7 @@ spec:
             periodSeconds: 10
           ports:
             - containerPort: 8080
-        - name: whodistrod
+        - name: whodistrod-api
           image: whodistrod-api-image
           imagePullPolicy: IfNotPresent
           resources:

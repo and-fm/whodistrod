@@ -13,7 +13,7 @@ images:
   - name: whodistrod-api-image
     newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:name"}
     newTag: api # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:tag"}
-    digest: sha256:5ebb13e4a6fb523abb47d44b7b0ca22ddfd1f0e4b58aa4805c7c4806e3d141cc # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:digest"}
+    digest: sha256:4a673643063f216299172215f7888d64365b729b5ace2606c96a4f9057f237e9 # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:digest"}
 patches:
   - target:
       group: traefik.io

@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Checkout ${{ env.APP_NAME }} repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Setup kubectl
         uses: azure/setup-kubectl@v4
       - name: Create configmap file
@@ -74,8 +76,6 @@ jobs:
           echo 'configmap<<EOF' >> $GITHUB_OUTPUT
           cat ${{ env.APP_NAME }}-configmap.yaml >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-        with:
-          fetch-depth: 1
       - name: Copy configmap to repo
         env:
           CONFIGMAP: ${{ steps.create-configmap.outputs.configmap }}

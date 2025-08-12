@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: andfm-dash-ingress
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`host.name`)
+      priority: 10
+      services:
+        - kind: Service
+          name: andfm-dash
+          passHostHeader: true
+          port: 8080
+  tls:
+    secretName: andfm-dash-cert
+    domains:
+      - main: host.name

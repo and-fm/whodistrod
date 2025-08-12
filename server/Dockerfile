@@ -1,0 +1,24 @@
+FROM golang:latest as build
+
+WORKDIR /usr/src/app
+
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+
+COPY . .
+
+# RUN go build -ldflags "-w -s" ./cmd/api
+RUN go build -ldflags "-w -s" -v -o /usr/local/bin/api .
+
+FROM scratch
+
+EXPOSE 8080
+
+WORKDIR /app
+
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /usr/local/bin/api /app/api
+COPY ./config/ /app/config/
+
+CMD ["/app/api"]

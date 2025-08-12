@@ -1,0 +1,142 @@
+#
+name: Create and publish a Docker image
+
+# Configures this workflow to run every time a change is pushed to the branch called `release`.
+on:
+  push:
+    branches: ["main"]
+    paths: [web/**, server/**]
+
+# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
+env:
+  APP_NAME: whodistrod
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+jobs:
+  build-and-push-web-image:
+    name: Build and push web image
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      imageDigest: ${{ steps.build.outputs.digest }}
+      #
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. The `id` "meta" allows the output of this step to be referenced in a subsequent step. The `images` value provides the base name for the tags and labels.
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=web
+      # This step uses the `docker/build-push-action` action to build the image, based on your repository's `Dockerfile`. If the build succeeds, it pushes the image to GitHub Packages.
+      # It uses the `context` parameter to define the build's context as the set of files located in the specified path. For more information, see "[Usage](https://github.com/docker/build-push-action#usage)" in the README of the `docker/build-push-action` repository.
+      # It uses the `tags` and `labels` parameters to tag and label the image with the output from the "meta" step.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        id: build
+        with:
+          context: .
+          file: infra/Dockerfile.web
+          build-args: |
+            VITE_ENV=prod
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  prepare-configmap:
+    runs-on: ubuntu-latest
+    name: Prepare API ConfigMap
+    steps:
+      - name: Checkout ${{ env.APP_NAME }} repo
+        uses: actions/checkout@v4
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+      - name: Create configmap file
+        id: create-configmap
+        run: |
+          cp server/config/config.prod.json config.json
+          kubectl create configmap ${{ env.APP_NAME }}-configmap-json --dry-run=client --from-file=config.json -n ${{ env.APP_NAME }}-prod -o yaml >> ${{ env.APP_NAME }}-configmap.yaml
+          echo 'configmap<<EOF' >> $GITHUB_OUTPUT
+          cat ${{ env.APP_NAME }}-configmap.yaml >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: and-fm/whodistrod
+          submodules: true
+      - name: Copy configmap to repo
+        env:
+          CONFIGMAP: ${{ steps.create-configmap.outputs.configmap }}
+        run: |
+          echo "$CONFIGMAP" > infra/deployment/prod/cm.yaml
+          git add -N infra/deployment/prod/cm.yaml
+      - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Push configmap
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'andfm-infra'
+          git config --global user.email 'infra@and.fm'
+          git add infra/deployment/prod/cm.yaml
+          git commit -m "deploying ${{ env.APP_NAME }} configmap"
+          git push
+  build-and-push-api-image:
+    needs: prepare-configmap
+    name: Build and push api image
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      imageDigest: ${{ steps.build.outputs.digest }}
+      #
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. The `id` "meta" allows the output of this step to be referenced in a subsequent step. The `images` value provides the base name for the tags and labels.
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=web
+      # This step uses the `docker/build-push-action` action to build the image, based on your repository's `Dockerfile`. If the build succeeds, it pushes the image to GitHub Packages.
+      # It uses the `context` parameter to define the build's context as the set of files located in the specified path. For more information, see "[Usage](https://github.com/docker/build-push-action#usage)" in the README of the `docker/build-push-action` repository.
+      # It uses the `tags` and `labels` parameters to tag and label the image with the output from the "meta" step.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        id: build
+        with:
+          context: .
+          file: infra/Dockerfile.server
+          build-args: |
+            VITE_ENV=prod
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

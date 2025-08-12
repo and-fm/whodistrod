@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "env": "local",
+  "appName": "whodistrod-api"
+}

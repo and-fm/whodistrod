@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/routes/0/match
+  value: Host(`whodistrod.and.fm`)
+
+- op: replace
+  path: /spec/tls/domains/0/main
+  value: whodistrod.and.fm

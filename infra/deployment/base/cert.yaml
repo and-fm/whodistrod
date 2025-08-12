@@ -1,9 +1,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: andfm-dash-cert
+  name: whodistrod-cert
 spec:
-  secretName: andfm-dash-cert
+  secretName: whodistrod-cert
   issuerRef:
     name: acme-issuer
     kind: ClusterIssuer

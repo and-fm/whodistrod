@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: andfm-dash-ingress
+  name: whodistrod-ingress
 spec:
   entryPoints:
     - websecure
@@ -11,10 +11,10 @@ spec:
       priority: 10
       services:
         - kind: Service
-          name: andfm-dash
+          name: whodistrod
           passHostHeader: true
           port: 8080
   tls:
-    secretName: andfm-dash-cert
+    secretName: whodistrod-cert
     domains:
       - main: host.name

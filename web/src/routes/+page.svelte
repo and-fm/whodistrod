@@ -83,8 +83,7 @@
         who distro'd?
       </h1>
       <p class="text-lg md:text-xl text-gray-600 max-w-xl">
-        instantly discover which distributor delivered your favorite tracks to
-        tidal
+        instantly discover which distributor delivered a given Tidal track
       </p>
     </div>
 

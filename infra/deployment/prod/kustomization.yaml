@@ -9,7 +9,7 @@ images:
   - name: whodistrod-image
     newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:name"}
     newTag: web # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:tag"}
-    digest: sha256:fe8a7760ecd7622b77ff0cf83fc45229d7d3b0afb90f55377a18c4c6c7e8520f # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:digest"}
+    digest: sha256:a55c68d60d508341fa4abfb7842207f9c6a1dce01165397309ee084691b4ebf1 # {"$imagepolicy": "flux-system:whodistrod-image-policy-web-prod:digest"}
   - name: whodistrod-api-image
     newName: ghcr.io/and-fm/whodistrod # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:name"}
     newTag: api # {"$imagepolicy": "flux-system:whodistrod-image-policy-api-prod:tag"}

@@ -6,52 +6,26 @@
   let loading = false;
   let error: string | null = null;
 
-  function parseTrackId(url: string): string | null {
-    try {
-      const parsedUrl = new URL(url);
-
-      // Handle /browse/track/<id> format
-      if (parsedUrl.pathname.includes("/browse/track/")) {
-        const match = parsedUrl.pathname.match(/\/browse\/track\/(\d+)/);
-        return match?.[1] || null;
-      }
-
-      // Handle /album/<albumId>/track/<trackId> format
-      if (parsedUrl.pathname.includes("/album/")) {
-        const match = parsedUrl.pathname.match(/\/track\/(\d+)/);
-        return match?.[1] || null;
-      }
-
-      // Handle direct /track/<id> format (if it exists)
-      if (parsedUrl.pathname.includes("/track/")) {
-        const match = parsedUrl.pathname.match(/\/track\/(\d+)/);
-        return match?.[1] || null;
-      }
-
-      return null;
-    } catch (e) {
-      return null;
-    }
-  }
-
   async function handleSubmit() {
     loading = true;
     error = null;
     try {
-      const trackId = parseTrackId(trackUrl);
-      if (!trackId) {
+      if (!trackUrl) {
         throw new Error(
-          "Invalid Tidal Track URL. Please check the URL and try again."
+          "Invalid Track URL. Please check the URL and try again."
         );
       }
 
       const response = await fetch(
-        `${AppConfig.backendUrl}/v1/tidal/track/${trackId}/providers`,
+        `${AppConfig.backendUrl}/v1/providers/track`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            trackUrl: trackUrl,
+          }),
         }
       );
 
@@ -83,16 +57,19 @@
         who distro'd?
       </h1>
       <p class="text-lg md:text-xl text-gray-600 max-w-xl">
-        instantly discover which distributor delivered a given Tidal track
+        instantly discover which distributor delivered a given track
       </p>
     </div>
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-6 mb-12">
+      <div class="text-gray-500 text-sm mb-2">
+        Currently supports tracks from Tidal and Spotify
+      </div>
       <div class="relative">
         <input
           type="url"
           bind:value={trackUrl}
-          placeholder="paste your tidal track url here"
+          placeholder="paste your track url here"
           class="w-full px-6 py-4 bg-transparent border-2 border-black rounded-none focus:outline-none focus:border-blue-600 text-lg placeholder:text-gray-400"
           required
         />

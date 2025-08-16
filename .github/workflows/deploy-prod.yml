@@ -29,6 +29,8 @@ jobs:
           secrets: |-
             TIDAL_CLIENT_ID:${{secrets.TIDAL_CLIENT_ID}}
             TIDAL_CLIENT_SECRET:${{secrets.TIDAL_CLIENT_SECRET}}
+            SPOTIFY_CLIENT_ID:${{secrets.SPOTIFY_CLIENT_ID}}
+            SPOTIFY_CLIENT_SECRET:${{secrets.SPOTIFY_CLIENT_SECRET}}
       - name: Seal secrets
         uses: and-fm/kubeseal-action@main
         id: seal-secret

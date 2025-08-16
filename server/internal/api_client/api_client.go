@@ -74,20 +74,21 @@ func GetResponseError(res *resty.Response, err error) error {
 	return err
 }
 
-func GetResponseBody[T any](body []byte) (*T, error) {
-	obj := new(T)
+func GetResponseBody[T any](body []byte) (T, error) {
+	var obj T
 
-	err := json.Unmarshal(body, obj)
+	err := json.Unmarshal(body, &obj)
 
 	return obj, err
 }
 
-func GET[T any](req *resty.Request) (*resty.Response, *T, error) {
+func GET[T any](req *resty.Request) (*resty.Response, T, error) {
+	var obj T
 	res, err := req.Get(req.URL)
 
 	err = GetResponseError(res, err)
 	if err != nil {
-		return nil, nil, err
+		return nil, obj, err
 	}
 
 	resBody, err := GetResponseBody[T](res.Body())
@@ -95,12 +96,14 @@ func GET[T any](req *resty.Request) (*resty.Response, *T, error) {
 	return res, resBody, err
 }
 
-func POST[T any](req *resty.Request) (*resty.Response, *T, error) {
+func POST[T any](req *resty.Request) (*resty.Response, T, error) {
+	var obj T
+
 	res, err := req.Post(req.URL)
 
 	err = GetResponseError(res, err)
 	if err != nil {
-		return nil, nil, err
+		return nil, obj, err
 	}
 
 	resBody, err := GetResponseBody[T](res.Body())
@@ -108,12 +111,14 @@ func POST[T any](req *resty.Request) (*resty.Response, *T, error) {
 	return res, resBody, err
 }
 
-func PUT[T any](req *resty.Request) (*resty.Response, *T, error) {
+func PUT[T any](req *resty.Request) (*resty.Response, T, error) {
+	var obj T
+
 	res, err := req.Put(req.URL)
 
 	err = GetResponseError(res, err)
 	if err != nil {
-		return nil, nil, err
+		return nil, obj, err
 	}
 
 	resBody, err := GetResponseBody[T](res.Body())
@@ -121,15 +126,18 @@ func PUT[T any](req *resty.Request) (*resty.Response, *T, error) {
 	return res, resBody, err
 }
 
-func DELETE[T any](req *resty.Request) (*resty.Response, *T, error) {
+func DELETE[T any](req *resty.Request) (*resty.Response, T, error) {
+	var obj T
+
 	res, err := req.Get(req.URL)
 
 	err = GetResponseError(res, err)
 	if err != nil {
-		return nil, nil, err
+		return nil, obj, err
 	}
 
 	resBody, err := GetResponseBody[T](res.Body())
 
 	return res, resBody, err
 }
+

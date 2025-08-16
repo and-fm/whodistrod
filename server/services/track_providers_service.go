@@ -73,7 +73,7 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 
 		return models.ProviderApiResponse{Provider: track.Included[0].Attributes.Name}, nil
 	default:
-		return models.ProviderApiResponse{}, errors.New("unsupported track service" + string(trackService))
+		return models.ProviderApiResponse{}, errors.New("unsupported track service " + string(trackService))
 	}
 }
 

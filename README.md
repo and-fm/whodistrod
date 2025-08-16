@@ -2,7 +2,11 @@
 
 I vibe coded this a bit
 
-Currently only supports Tidal track URLs, which is due to the information for the distributor being provided by Tidal.
-However I do plan to allow pasting other platform URLs like Spotify or Apple Music.
+Currently supports Tidal and Spotify track urls, with more providers to come.
 
 Anybody is welcome to contribute!
+
+## Todo
+
+- Add Apple Music support
+- Add Deezer support

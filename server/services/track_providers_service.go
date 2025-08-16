@@ -38,9 +38,6 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 			return res, err
 		}
 
-		fmt.Println("spotify track url", trackUrl)
-		fmt.Println("spotify track id", trackId)
-
 		track, err := s.GetSpotifyTrackById(trackId)
 		if err != nil {
 			return res, fmt.Errorf("get spotify track by id: %w", err)
@@ -64,8 +61,6 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 		if err != nil {
 			return res, err
 		}
-		fmt.Println("tidal track url", trackUrl)
-		fmt.Println("tidal track id", trackId)
 
 		track, err := s.GetTidalTrackProvidersById(trackId)
 		if err != nil {

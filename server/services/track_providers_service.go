@@ -46,13 +46,14 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 		if track.ExternalIDs.ISRC == "" {
 			return res, errors.New("could not find ISRC for spotify track")
 		}
+
 		tidalTrack, err := s.GetTidalTrackIdByIsrc(track.ExternalIDs.ISRC)
 		if err != nil {
-			return res, fmt.Errorf("get tidal track by isrc: %w", err)
+			return res, fmt.Errorf("get tidal track by isrc: %s, err: %w", track.ExternalIDs.ISRC, err)
 		}
 
 		if len(tidalTrack.Included) == 0 {
-			return res, errors.New("could not find tidal track providers")
+			return res, errors.New("could not find tidal track providers, isrc: " + track.ExternalIDs.ISRC)
 		}
 
 		return models.ProviderApiResponse{Provider: tidalTrack.Included[0].Attributes.Name}, nil
@@ -68,7 +69,7 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 		}
 
 		if len(track.Included) == 0 {
-			return res, errors.New("could not find tidal track providers")
+			return res, errors.New("could not find tidal track providers. Track ID: " + trackId)
 		}
 
 		return models.ProviderApiResponse{Provider: track.Included[0].Attributes.Name}, nil

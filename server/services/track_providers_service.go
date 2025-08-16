@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	dspclients "github.com/and-fm/whodistrod/dsp_clients"
 	"github.com/and-fm/whodistrod/models"
@@ -47,7 +48,8 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 			return res, errors.New("could not find ISRC for spotify track")
 		}
 
-		tidalTrack, err := s.GetTidalTrackIdByIsrc(track.ExternalIDs.ISRC)
+		isrcUpper := strings.ToUpper(track.ExternalIDs.ISRC)
+		tidalTrack, err := s.GetTidalTrackIdByIsrc(isrcUpper)
 		if err != nil {
 			return res, fmt.Errorf("get tidal track by isrc: %s, err: %w", track.ExternalIDs.ISRC, err)
 		}

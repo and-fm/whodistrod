@@ -1,8 +1,8 @@
 package models
 
 type TidalTrack struct {
-	Data     []TidalTrackData `json:"data"`
-	Links    TidalLinks     `json:"links"`
+	Data  []TidalTrackData `json:"data"`
+	Links TidalLinks       `json:"links"`
 }
 
 type TidalTrackWithProviders struct {
@@ -11,35 +11,39 @@ type TidalTrackWithProviders struct {
 }
 
 type TidalProvider struct {
-	ID            string             `json:"id"`
-	Type          string             `json:"type"`
-	Attributes    TidalProviderAttributes    `json:"attributes"`
+	ID         string                  `json:"id"`
+	Type       string                  `json:"type"`
+	Attributes TidalProviderAttributes `json:"attributes"`
 }
 
 type TidalTrackData struct {
-	ID            string             `json:"id"`
-	Type          string             `json:"type"`
+	ID            string                  `json:"id"`
+	Type          string                  `json:"type"`
 	Attributes    TidalTrackAttributes    `json:"attributes"`
 	Relationships TidalTrackRelationships `json:"relationships"`
 }
 
 type TidalTrackAttributes struct {
-	Title         string         `json:"title"`
-	ISRC          string         `json:"isrc"`
-	Duration      string         `json:"duration"`
-	Copyright     string         `json:"copyright"`
-	Explicit      bool           `json:"explicit"`
-	Popularity    float64        `json:"popularity"`
-	AccessType    string         `json:"accessType"`
-	Availability  []string       `json:"availability"`
-	MediaTags     []string       `json:"mediaTags"`
+	Title         string              `json:"title"`
+	ISRC          string              `json:"isrc"`
+	Duration      string              `json:"duration"`
+	Copyright     TidalCopyright      `json:"copyright"`
+	Explicit      bool                `json:"explicit"`
+	Popularity    float64             `json:"popularity"`
+	AccessType    string              `json:"accessType"`
+	Availability  []string            `json:"availability"`
+	MediaTags     []string            `json:"mediaTags"`
 	ExternalLinks []TidalExternalLink `json:"externalLinks"`
-	Spotlighted   bool           `json:"spotlighted"`
-	CreatedAt     string         `json:"createdAt"`
+	Spotlighted   bool                `json:"spotlighted"`
+	CreatedAt     string              `json:"createdAt"`
+}
+
+type TidalCopyright struct {
+	Text string `json:"text"`
 }
 
 type TidalExternalLink struct {
-	Href string   `json:"href"`
+	Href string        `json:"href"`
 	Meta TidalLinkMeta `json:"meta"`
 }
 
@@ -78,26 +82,26 @@ type TidalLinks struct {
 }
 
 type TidalAlbum struct {
-	ID            string             `json:"id"`
-	Type          string             `json:"type"`
+	ID            string                  `json:"id"`
+	Type          string                  `json:"type"`
 	Attributes    TidalAlbumAttributes    `json:"attributes"`
 	Relationships TidalAlbumRelationships `json:"relationships"`
 }
 
 type TidalAlbumAttributes struct {
-	Title           string         `json:"title"`
-	BarcodeID       string         `json:"barcodeId"`
-	NumberOfVolumes int            `json:"numberOfVolumes"`
-	NumberOfItems   int            `json:"numberOfItems"`
-	Duration        string         `json:"duration"`
-	Explicit        bool           `json:"explicit"`
-	ReleaseDate     string         `json:"releaseDate"`
-	Copyright       string         `json:"copyright"`
-	Popularity      float64        `json:"popularity"`
-	Availability    []string       `json:"availability"`
-	MediaTags       []string       `json:"mediaTags"`
+	Title           string              `json:"title"`
+	BarcodeID       string              `json:"barcodeId"`
+	NumberOfVolumes int                 `json:"numberOfVolumes"`
+	NumberOfItems   int                 `json:"numberOfItems"`
+	Duration        string              `json:"duration"`
+	Explicit        bool                `json:"explicit"`
+	ReleaseDate     string              `json:"releaseDate"`
+	Copyright       string              `json:"copyright"`
+	Popularity      float64             `json:"popularity"`
+	Availability    []string            `json:"availability"`
+	MediaTags       []string            `json:"mediaTags"`
 	ExternalLinks   []TidalExternalLink `json:"externalLinks"`
-	Type            string         `json:"type"`
+	Type            string              `json:"type"`
 }
 
 type TidalAlbumRelationships struct {

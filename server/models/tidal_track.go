@@ -96,7 +96,7 @@ type TidalAlbumAttributes struct {
 	Duration        string              `json:"duration"`
 	Explicit        bool                `json:"explicit"`
 	ReleaseDate     string              `json:"releaseDate"`
-	Copyright       string              `json:"copyright"`
+	Copyright       TidalCopyright      `json:"copyright"`
 	Popularity      float64             `json:"popularity"`
 	Availability    []string            `json:"availability"`
 	MediaTags       []string            `json:"mediaTags"`

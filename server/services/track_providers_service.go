@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"fmt"
-	"strings"
+	//"fmt"
+	//"strings"
 
 	dspclients "github.com/and-fm/whodistrod/dsp_clients"
 	"github.com/and-fm/whodistrod/models"
@@ -34,31 +34,33 @@ func (s *trackProvidersService) GetTrackProviders(trackUrl string) (res models.P
 
 	switch trackService {
 	case "spotify":
-		trackId, err := parseSpotifyTrackId(trackUrl)
-		if err != nil {
-			return res, err
-		}
+		// 	trackId, err := parseSpotifyTrackId(trackUrl)
+		// 	if err != nil {
+		// 		return res, err
+		// 	}
 
-		track, err := s.GetSpotifyTrackById(trackId)
-		if err != nil {
-			return res, fmt.Errorf("get spotify track by id: %w", err)
-		}
+		// 	track, err := s.GetSpotifyTrackById(trackId)
+		// 	if err != nil {
+		// 		return res, fmt.Errorf("get spotify track by id: %w", err)
+		// 	}
 
-		if track.ExternalIDs.ISRC == "" {
-			return res, errors.New("could not find ISRC for spotify track")
-		}
+		// 	if track.ExternalIDs.ISRC == "" {
+		// 		return res, errors.New("could not find ISRC for spotify track")
+		// 	}
 
-		isrcUpper := strings.ToUpper(track.ExternalIDs.ISRC)
-		tidalTrack, err := s.GetTidalTrackIdByIsrc(isrcUpper)
-		if err != nil {
-			return res, fmt.Errorf("get tidal track by isrc: %s, err: %w", track.ExternalIDs.ISRC, err)
-		}
+		// 	isrcUpper := strings.ToUpper(track.ExternalIDs.ISRC)
+		// 	tidalTrack, err := s.GetTidalTrackIdByIsrc(isrcUpper)
+		// 	if err != nil {
+		// 		return res, fmt.Errorf("get tidal track by isrc: %s, err: %w", track.ExternalIDs.ISRC, err)
+		// 	}
 
-		if len(tidalTrack.Included) == 0 {
-			return res, errors.New("could not find tidal track providers, isrc: " + track.ExternalIDs.ISRC)
-		}
+		// 	if len(tidalTrack.Included) == 0 {
+		// 		return res, errors.New("could not find tidal track providers, isrc: " + track.ExternalIDs.ISRC)
+		// 	}
 
-		return models.ProviderApiResponse{Provider: tidalTrack.Included[0].Attributes.Name}, nil
+		//	return models.ProviderApiResponse{Provider: tidalTrack.Included[0].Attributes.Name}, nil
+		return models.ProviderApiResponse{}, errors.New("unsupported track service " + string(trackService))
+
 	case "tidal":
 		trackId, err := parseTidalTrackId(trackUrl)
 		if err != nil {

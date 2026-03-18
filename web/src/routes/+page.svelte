@@ -63,7 +63,7 @@
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-6 mb-12">
       <div class="text-gray-500 text-sm mb-2">
-        Currently supports tracks from Tidal and Spotify
+        Currently supports tracks from Tidal
       </div>
       <div class="relative">
         <input

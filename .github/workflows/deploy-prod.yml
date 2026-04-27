@@ -27,6 +27,7 @@ jobs:
           name: ${{ env.APP_NAME }}-secrets
           namespace: ${{ env.APP_NAME }}-prod
           secrets: |-
+            PG_CONN:${{ secrets.PG_CONN }}
             TIDAL_CLIENT_ID:${{secrets.TIDAL_CLIENT_ID}}
             TIDAL_CLIENT_SECRET:${{secrets.TIDAL_CLIENT_SECRET}}
             SPOTIFY_CLIENT_ID:${{secrets.SPOTIFY_CLIENT_ID}}

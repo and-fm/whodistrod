@@ -11,9 +11,9 @@ import (
 type healthcheckHandler struct {
 	dig.In
 
-	BaseRouter core.BaseRouter
-	Config     *config.Config
-	Logger     logging.Logger
+	Router core.BaseRouter
+	Config *config.Config
+	Logger logging.Logger
 }
 
 func NewHealthcheckHandler(h healthcheckHandler) core.Handler {
@@ -21,7 +21,7 @@ func NewHealthcheckHandler(h healthcheckHandler) core.Handler {
 }
 
 func (h *healthcheckHandler) Register() {
-	g := h.BaseRouter.BaseEcho().Group("")
+	g := h.Router.Echo().Group("")
 
 	g.GET("/healthz", h.healthz)
 	g.GET("/readyz", h.readyz)

@@ -28,8 +28,8 @@ func (s *server) Start() {
 	done := make(chan bool, 1)
 	go s.GracefulShutdown(done)
 
-	s.BaseRouter.BaseEcho().HideBanner = true
-	s.BaseRouter.BaseEcho().Start(fmt.Sprintf(":%v", s.Config.Port))
+	s.BaseRouter.Echo().HideBanner = true
+	s.BaseRouter.Echo().Start(fmt.Sprintf(":%v", s.Config.Port))
 
 	<-done
 	log.Println("Graceful shutdown complete.")
@@ -50,7 +50,7 @@ func (s *server) GracefulShutdown(done chan bool) {
 	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := s.BaseRouter.BaseEcho().Shutdown(ctx); err != nil {
+	if err := s.BaseRouter.Echo().Shutdown(ctx); err != nil {
 		log.Printf("Server forced to shutdown with error: %v", err)
 	}
 

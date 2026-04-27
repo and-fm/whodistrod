@@ -12,9 +12,9 @@ import (
 type trackProvidersHandler struct {
 	dig.In
 
-	BaseRouter core.BaseRouter
-	Config     *config.Config
-	Logger     logging.Logger
+	Router core.AuthenticatedRouter
+	Config *config.Config
+	Logger logging.Logger
 
 	TrackProvidersService services.TrackProvidersService
 }
@@ -28,7 +28,7 @@ func NewTrackProvidersHandler(h trackProvidersHandler) core.Handler {
 }
 
 func (h *trackProvidersHandler) Register() {
-	g := h.BaseRouter.BaseEcho().Group("/v1/providers")
+	g := h.Router.Echo().Group("/v1/providers")
 
 	g.POST("/track", h.getTrackProviders)
 }

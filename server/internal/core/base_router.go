@@ -20,7 +20,7 @@ type baseRouter struct {
 }
 
 type BaseRouter interface {
-	BaseEcho() *echo.Echo
+	Echo() *echo.Echo
 }
 
 func NewBaseRouter(b baseRouter) BaseRouter {
@@ -33,7 +33,7 @@ func NewBaseRouter(b baseRouter) BaseRouter {
 	return &b
 }
 
-func (b *baseRouter) BaseEcho() *echo.Echo {
+func (b *baseRouter) Echo() *echo.Echo {
 	return b.echo
 }
 

@@ -12,7 +12,7 @@
     try {
       if (!trackUrl) {
         throw new Error(
-          "Invalid Track URL. Please check the URL and try again."
+          "Invalid Track URL. Please check the URL and try again.",
         );
       }
 
@@ -26,7 +26,7 @@
           body: JSON.stringify({
             trackUrl: trackUrl,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -63,7 +63,7 @@
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-6 mb-12">
       <div class="text-gray-500 text-sm mb-2">
-        Currently supports tracks from Tidal
+        Currently supports tracks from Tidal and Spotify
       </div>
       <div class="relative">
         <input
